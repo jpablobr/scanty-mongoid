@@ -68,14 +68,6 @@ get '/past' do
   erb :archive, :locals => { :posts => posts }
 end
 
-#TODO: separate tags to its own document!
-get '/past/tags/:tag' do
-  tag = params[:tag]
-  posts = Post.where(:tags.all => [tag])
-  @title = "Posts tagged #{tag}"
-  erb :tagged, :locals => { :posts => posts, :tag => tag }
-end
-
 get '/feed' do
   @posts = Post.all.order_by([[:updated_at, :desc]])
 
@@ -105,7 +97,7 @@ end
 
 post '/posts' do
   auth
-  post = Post.new :title => params[:title], :tags => params[:tags], :body => params[:body], :created_at => Time.now, :slug => Post.make_slug(params[:title])
+  post = Post.new :title => params[:title], :body => params[:body], :created_at => Time.now, :slug => Post.make_slug(params[:title])
   post.save
   redirect post.url
 end
@@ -122,7 +114,6 @@ post '/past/:slug/' do
   post = Post.last(:conditions => {:slug => params[:slug]})
   stop [ 404, "Page not found" ] unless post
   post.title = params[:title]
-  post.tags = params[:tags]
   post.body = params[:body]
   post.save
   redirect post.url

@@ -10,7 +10,6 @@ class Post
   field :title
   field :body
   field :slug
-  field :tags #TODO: separate document
   field :created_at
   field :updated_at
 
@@ -39,12 +38,6 @@ class Post
   def more?
     @more ||= body.match(/.{200}.*?\n(.*)/m)
     @more
-  end
-
-  def linked_tags
-    tags.split.inject([]) do |accum, tag|
-      accum << "<a href=\"/past/tags/#{tag}\">#{tag}</a>"
-    end.join(" ")
   end
 
   def self.make_slug(title)

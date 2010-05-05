@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'mongo'
 require 'sinatra/mongoid'
+
 include Mongo
 
 configure do
